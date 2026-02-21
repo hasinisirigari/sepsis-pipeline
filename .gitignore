@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Environment variables — NEVER commit secrets
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/settings.json
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data files — too large for git
+data/
+*.csv
+*.parquet
+*.gz
+mimic-iv/
+
+# Docker volumes
+docker/postgres_data/
+docker/grafana_data/
+docker/kafka_data/
+
+# Great Expectations
+great_expectations/uncommitted/
+
+# MLflow
+mlruns/
+
+# Logs
+*.log
+logs/
+
+# Terraform (if you add IaC later)
+*.tfstate
+*.tfstate.backup
+.terraform/
