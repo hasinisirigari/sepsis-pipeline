@@ -12,8 +12,8 @@ import boto3
 import pandas as pd
 import io
 
-AWS_ACCESS_KEY = "AKIA3GGFQAF2CEF22XOT"
-AWS_SECRET_KEY = "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"
+AWS_ACCESS_KEY = "AWS_ACCESS_KEY_ID"
+AWS_SECRET_KEY = "AWS_SECRET_ACCESS_KEY"
 BUCKET = "sepsis-early-warning-hasini"
 
 s3 = boto3.client(
