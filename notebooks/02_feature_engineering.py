@@ -5,8 +5,8 @@ import numpy as np
 import io
 import math
 
-AWS_ACCESS_KEY = "AKIA3GGFQAF2CEF22XOT"
-AWS_SECRET_KEY = "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"
+AWS_ACCESS_KEY = "ACCESS_KEY"
+AWS_SECRET_KEY = "SECRET_KEY"
 BUCKET = "sepsis-early-warning-hasini"
 
 s3 = boto3.client(
