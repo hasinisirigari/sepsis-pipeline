@@ -51,3 +51,5 @@ logs/
 *.tfstate
 *.tfstate.backup
 .terraform/
+lambda_layer/
+lambda_docker/

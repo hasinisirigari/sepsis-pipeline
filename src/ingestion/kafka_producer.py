@@ -1,7 +1,5 @@
-"""
-Kafka Producer: Replays MIMIC-IV data as real-time stream.
-Reads from Silver layer, sends to Kafka topics at configurable speed.
-"""
+# Kafka Producer: Replays MIMIC-IV data as real-time stream.
+# Reads from Silver layer, sends to Kafka topics at configurable speed.
 
 import json
 import time
