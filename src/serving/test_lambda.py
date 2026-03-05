@@ -1,4 +1,4 @@
-"""Test the Lambda handler locally."""
+# Test the Lambda handler locally
 
 from src.serving.lambda_handler import lambda_handler
 import json
