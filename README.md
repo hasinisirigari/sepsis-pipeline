@@ -119,7 +119,9 @@ AWS Lambda serves predictions via REST API:
 
 ## Dashboard
 
-A monitoring dashboard prototype is available in `dashboard/SepsisDashboard.jsx` — displays patient risk scores, vital signs, lab values, trend sparklines, and SHAP feature importance for each patient.
+**[Live Dashboard Demo](https://codesandbox.io/p/sandbox/py8hfr)**
+
+The monitoring dashboard isplays patient risk scores, vital signs, lab values, trend sparklines, and SHAP feature importance for each patient.
 
 ## Project Structure
 
