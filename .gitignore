@@ -53,3 +53,7 @@ logs/
 .terraform/
 lambda_layer/
 lambda_docker/
+
+response.json
+test_payload.json
+trust-policy.json

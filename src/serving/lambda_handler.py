@@ -1,12 +1,8 @@
-# AWS Lambda handler for sepsis risk prediction.
-# Loads LightGBM model from S3, scores patient data, returns risk + SHAP explanation.
-
 import json
-import pickle
 import os
-import io
 import boto3
 import numpy as np
+import lightgbm as lgb
 
 MODEL = None
 
@@ -32,23 +28,28 @@ def load_model():
         return MODEL
 
     bucket = os.environ.get('MODEL_BUCKET', 'sepsis-early-warning-hasini')
-    key = os.environ.get('MODEL_KEY', 'models/lgbm_sepsis_model.pkl')
+    key = os.environ.get('MODEL_KEY', 'models/lgbm_sepsis_model.txt')
 
     s3 = boto3.client('s3')
     obj = s3.get_object(Bucket=bucket, Key=key)
-    MODEL = pickle.loads(obj['Body'].read())
+
+    tmp_path = '/tmp/model.txt'
+    with open(tmp_path, 'wb') as f:
+        f.write(obj['Body'].read())
+
+    MODEL = lgb.Booster(model_file=tmp_path)
     return MODEL
 
 
 def classify_risk(probability):
     if probability >= 0.8:
-        return "RED", "Critical — immediate clinical review recommended"
+        return "RED", "Critical - immediate clinical review recommended"
     elif probability >= 0.6:
-        return "ORANGE", "High risk — close monitoring and reassessment needed"
+        return "ORANGE", "High risk - close monitoring and reassessment needed"
     elif probability >= 0.3:
-        return "YELLOW", "Moderate risk — monitor trends closely"
+        return "YELLOW", "Moderate risk - monitor trends closely"
     else:
-        return "GREEN", "Low risk — continue standard monitoring"
+        return "GREEN", "Low risk - continue standard monitoring"
 
 
 def lambda_handler(event, context):
@@ -62,10 +63,11 @@ def lambda_handler(event, context):
 
         features = []
         for feat in EXPECTED_FEATURES:
-            features.append(body.get(feat, None))
+            val = body.get(feat, np.nan)
+            features.append(float(val) if val is not None else np.nan)
 
-        X = np.array([features], dtype=float)
-        probability = float(model.predict_proba(X)[:, 1][0])
+        X = np.array([features])
+        probability = float(model.predict(X)[0])
         alert_level, alert_message = classify_risk(probability)
 
         response = {
@@ -73,7 +75,7 @@ def lambda_handler(event, context):
             'alert_level': alert_level,
             'alert_message': alert_message,
             'patient_id': body.get('stay_id', 'unknown'),
-            'features_received': len([f for f in features if f is not None]),
+            'features_received': len([f for f in features if not np.isnan(f)]),
             'features_expected': len(EXPECTED_FEATURES),
         }
 
